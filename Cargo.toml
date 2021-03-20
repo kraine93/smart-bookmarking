@@ -1,0 +1,11 @@
+[package]
+name = "smart-bookmarking"
+version = "0.1.0"
+authors = ["Kieran Raine <kraine93@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+percent-encoding = "2.1.0"
+rocket = "0.4.7"
