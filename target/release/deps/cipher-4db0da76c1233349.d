@@ -1,0 +1,11 @@
+C:\Development\Rust\smart-bookmarking\target\release\deps\cipher-4db0da76c1233349.rmeta: C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\lib.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block\errors.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream\errors.rs
+
+C:\Development\Rust\smart-bookmarking\target\release\deps\libcipher-4db0da76c1233349.rlib: C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\lib.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block\errors.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream\errors.rs
+
+C:\Development\Rust\smart-bookmarking\target\release\deps\cipher-4db0da76c1233349.d: C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\lib.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block\errors.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream\errors.rs
+
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\lib.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\block\errors.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\cipher-0.2.5\src\stream\errors.rs:

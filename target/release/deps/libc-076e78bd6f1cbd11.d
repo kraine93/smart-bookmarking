@@ -1,0 +1,11 @@
+C:\Development\Rust\smart-bookmarking\target\release\deps\libc-076e78bd6f1cbd11.rmeta: C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\lib.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\macros.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\fixed_width_ints.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\mod.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\msvc.rs
+
+C:\Development\Rust\smart-bookmarking\target\release\deps\liblibc-076e78bd6f1cbd11.rlib: C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\lib.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\macros.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\fixed_width_ints.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\mod.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\msvc.rs
+
+C:\Development\Rust\smart-bookmarking\target\release\deps\libc-076e78bd6f1cbd11.d: C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\lib.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\macros.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\fixed_width_ints.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\mod.rs C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\msvc.rs
+
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\lib.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\macros.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\fixed_width_ints.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\mod.rs:
+C:\Users\kraine.SIDETRADE\.cargo\registry\src\github.com-1ecc6299db9ec823\libc-0.2.90\src\windows\msvc.rs:

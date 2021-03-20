@@ -1,0 +1,1 @@
+C:\Development\Rust\smart-bookmarking\target\release\smart-bookmarking.exe: C:\Development\Rust\smart-bookmarking\src\main.rs C:\Development\Rust\smart-bookmarking\src\utils\github.rs C:\Development\Rust\smart-bookmarking\src\utils\google.rs C:\Development\Rust\smart-bookmarking\src\utils\mod.rs C:\Development\Rust\smart-bookmarking\src\utils\twitter.rs
