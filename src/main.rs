@@ -6,6 +6,7 @@ extern crate rocket;
 use rocket::http::{RawStr, Status};
 use rocket::response::Redirect;
 use rocket_contrib::json::Json;
+use rocket_contrib::templates::Template;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
 use std::time::Instant;
 mod utils;
@@ -41,12 +42,22 @@ fn search(cmd: String) -> Redirect {
     Redirect::to(redirect_url)
 }
 
+#[derive(serde::Serialize)]
+struct TemplateContext {
+    bookmarks: Bookmarks,
+}
+
 #[get("/bookmarks")]
-pub fn get_bookmarks() -> Json<Bookmarks> {
+pub fn get_bookmarks() -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    Json(bookmarks)
+    Template::render(
+        "bookmarks",
+        TemplateContext {
+            bookmarks: bookmarks,
+        },
+    )
 }
 
 #[post("/bookmarks/<key>", data = "<bookmark>")]
@@ -118,5 +129,6 @@ fn main() {
                 remove_command
             ],
         )
+        .attach(Template::fairing())
         .launch();
 }
