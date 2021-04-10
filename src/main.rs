@@ -18,7 +18,7 @@ fn search(cmd: String) -> Redirect {
     let start = Instant::now();
 
     let mut bookmarks =
-        utils::bookmarks::get_bookmarks_from_file("src/bookmarks.json").expect("wtf man");
+        utils::bookmarks::get_bookmarks_from_file("src/bookmarks.json").unwrap_or_default();
 
     let (command, query) = utils::get_command_from_query_string(&cmd);
 
