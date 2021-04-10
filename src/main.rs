@@ -4,6 +4,8 @@
 extern crate rocket;
 
 use rocket::response::Redirect;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::time::Instant;
 mod utils;
 
 #[get("/")]
@@ -13,14 +15,23 @@ fn index() -> &'static str {
 
 #[get("/search?<cmd>")]
 fn search(cmd: String) -> Redirect {
-    println!("You searched for: {}", cmd);
-    let command = utils::get_command_from_query_string(&cmd);
+    let start = Instant::now();
 
-    let redirect_url = match command {
-        "gh" => utils::github::construct_github_url(&cmd),
-        "tw" => utils::twitter::construct_twitter_url(&cmd),
-        _ => utils::google::construct_google_search_query(&cmd),
+    let mut bookmarks =
+        utils::bookmarks::get_bookmarks_from_file("src/bookmarks.json").expect("wtf man");
+
+    let (command, query) = utils::get_command_from_query_string(&cmd);
+
+    let redirect_url = match bookmarks.entry(command.to_string()) {
+        Occupied(mut bookmark) => utils::bookmarks::construct_bookmark_url(
+            bookmark.get_mut(),
+            utils::get_command_from_query_string(query),
+        ),
+        Vacant(_) => utils::google::construct_google_search_query(&cmd),
     };
+
+    println!("Time elapsed: {:?}", start.elapsed());
+
     Redirect::to(redirect_url)
 }
 

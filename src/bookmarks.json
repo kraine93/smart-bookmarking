@@ -1,0 +1,15 @@
+{
+	"tw": {
+		"url": "https://twitter.com",
+		"cmds": {
+			"s": { "path": "/search?q={}", "isDefault": true },
+			"p": { "path": "/{}" }
+		}
+	},
+	"gh": {
+		"url": "https://github.com",
+		"cmds": {
+			"r": { "path": "/{}", "isDefault": true}
+		}
+	}
+}
