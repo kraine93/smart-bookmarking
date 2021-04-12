@@ -1,0 +1,82 @@
+{% extends "index" %}
+{% block title %}Bookmark{% endblock title %}
+{% block content %}
+<a href="/bookmarks" class="button" style="margin-bottom: 0.5rem;">
+  <span class="material-icons">arrow_back</span>
+  Back to bookmarks
+</a>
+<div class="bookmark">
+  <div class="title">
+    <h3>{{ bookmark.name }}</h3>
+    <h3>
+      <b>{{ shortcut }}</b>
+    </h3>
+  </div>
+  <p>URL: <a href={{bookmark.url}}>{{ bookmark.url }}</a></p>
+  <p>Commands:</p>
+  <ul>
+    {% for key, cmd in bookmark.cmds %}
+    <li class="command">
+      <div class="title">
+        <span class="title">
+          {% if cmd.isDefault %}
+          <span class="material-icons">star</span>
+          {% endif %}
+          {{ cmd.desc }}
+        </span>
+        <h3>
+          <b>{{ key }}</b>
+        </h3>
+      </div>
+      <p>Path: {{ cmd.path }}</p>
+    </li>
+    {% endfor %}
+    <li>
+      <a href="/" class="button white">
+        <span class="material-icons">add</span>
+        Add command
+      </a>
+    </li>
+  </ul>
+  <div class="button-container">
+    <button id="btnDelete" class="button secondary" onclick="deleteBookmark()">
+      <span class="material-icons">bookmark_remove</span>
+      Delete
+    </button>
+    <a href="/bookmarks/{{shortcut}}/edit" class="button white">
+      <span class="material-icons">edit</span>
+      Edit
+    </a>
+  </div>
+</div>
+
+<script>
+  async function deleteBookmark() {
+    if (confirm("Delete this bookmark?")) {
+      const btnDelete = document.getElementById("btnDelete");
+      btnDelete.disabled = true;
+      setTimeout(() => btnDelete.disabled = false, 2000);
+      
+      const result = await deleteRequest(`/bookmarks/{{shortcut}}`);
+      
+      if (result) {
+        alert("Bookmark deleted!");
+        window.location.href = "/bookmarks";
+      }
+    }
+  }
+
+  async function deleteRequest(url) {
+    try {
+      const response = await fetch(url, {
+        method: "DELETE"
+      })
+
+      return response;
+    } catch(err) {
+      console.error(err);
+      throw err;
+    }
+  }
+</script>
+{% endblock content %}

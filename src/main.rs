@@ -48,6 +48,12 @@ struct BookmarksContext {
     bookmarks: Bookmarks,
 }
 
+#[derive(serde::Serialize)]
+struct BookmarkContext<'a> {
+    shortcut: String,
+    bookmark: &'a Bookmark,
+}
+
 #[get("/bookmarks")]
 pub fn get_bookmarks() -> Template {
     let bookmarks =
@@ -61,19 +67,45 @@ pub fn get_bookmarks() -> Template {
     )
 }
 
-#[derive(serde::Serialize)]
-struct AddBookmarkContext {
-    shortcut: String,
-    bookmark: Bookmark,
-}
-
 #[get("/bookmarks/add")]
 pub fn add_bookmark_template() -> Template {
     Template::render(
         "add-bookmark",
-        AddBookmarkContext {
+        BookmarkContext {
             shortcut: String::new(),
-            bookmark: Bookmark::default(),
+            bookmark: &Bookmark::default(),
+        },
+    )
+}
+
+#[get("/bookmarks/<key>")]
+pub fn get_bookmark(key: &RawStr) -> Template {
+    let bookmarks =
+        utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
+
+    let bookmark = bookmarks.get(&key.to_string()).expect("");
+
+    Template::render(
+        "bookmark",
+        BookmarkContext {
+            shortcut: key.to_string(),
+            bookmark: bookmark,
+        },
+    )
+}
+
+#[get("/bookmarks/<key>/edit")]
+pub fn edit_bookmark(key: &RawStr) -> Template {
+    let bookmarks =
+        utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
+
+    let bookmark = bookmarks.get(&key.to_string()).expect("");
+
+    Template::render(
+        "add-bookmark",
+        BookmarkContext {
+            shortcut: key.to_string(),
+            bookmark: bookmark,
         },
     )
 }
@@ -94,13 +126,42 @@ fn add_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
             .set_message("Only one command can be set as default!");
     }
 
+    let bookmarks =
+        utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
+
+    if let Some(_existing_bookmark) = bookmarks.get(&key.to_string()) {
+        return ApiResponse::new()
+            .set_status(Status::Conflict)
+            .set_message("A bookmark with this shortcut already exists!");
+    }
+
     match utils::bookmarks::add_or_update_bookmark(
         BOOKMARKS_FILE_PATH,
         key.to_string(),
         bookmark.into_inner(),
     ) {
         Ok(_) => return ApiResponse::new().set_message("Bookmark added!"),
-        Err(_) => return ApiResponse::new().set_status(Status::InternalServerError),
+        Err(_) => {
+            return ApiResponse::new()
+                .set_status(Status::InternalServerError)
+                .set_message("Something went wrong! Please try again.")
+        }
+    }
+}
+
+#[patch("/bookmarks/<key>", data = "<bookmark>")]
+fn update_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
+    match utils::bookmarks::add_or_update_bookmark(
+        BOOKMARKS_FILE_PATH,
+        key.to_string(),
+        bookmark.into_inner(),
+    ) {
+        Ok(_) => return ApiResponse::new().set_message("Bookmark updated!"),
+        Err(_) => {
+            return ApiResponse::new()
+                .set_status(Status::InternalServerError)
+                .set_message("Something went wrong! Please try again.")
+        }
     }
 }
 
@@ -120,7 +181,11 @@ fn add_command(key: &RawStr, cmd: &RawStr, command: Json<Command>) -> ApiRespons
 #[delete("/bookmarks/<key>")]
 fn remove_bookmark(key: &RawStr) -> ApiResponse {
     match utils::bookmarks::remove_bookmark(BOOKMARKS_FILE_PATH, key.to_string()) {
-        Ok(_) => return ApiResponse::new().set_status(Status::Ok),
+        Ok(_) => {
+            return ApiResponse::new()
+                .set_status(Status::Ok)
+                .set_message("Bookmark deleted!")
+        }
         Err(_) => return ApiResponse::new().set_status(Status::InternalServerError),
     }
 }
@@ -133,6 +198,11 @@ fn remove_command(key: &RawStr, cmd: &RawStr) -> ApiResponse {
     }
 }
 
+#[catch(404)]
+fn not_found() -> String {
+    format!("That page doesn't exist. Try something else?")
+}
+
 fn main() {
     rocket::ignite()
         .mount(
@@ -141,7 +211,10 @@ fn main() {
                 index,
                 search,
                 get_bookmarks,
+                get_bookmark,
                 add_bookmark,
+                edit_bookmark,
+                update_bookmark,
                 add_bookmark_template,
                 add_command,
                 remove_bookmark,
@@ -150,5 +223,6 @@ fn main() {
         )
         .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
+        .register(catchers![not_found])
         .launch();
 }

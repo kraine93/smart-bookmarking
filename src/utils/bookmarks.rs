@@ -52,7 +52,9 @@ pub fn add_or_update_bookmark(
   bookmark: Bookmark,
 ) -> Result<(), Box<dyn error::Error>> {
   let mut bookmarks = get_bookmarks_from_file(path).unwrap_or_default();
-  *bookmarks.entry(key).or_insert(Bookmark::default()) = bookmark;
+  let b = bookmarks.entry(key).or_insert(Bookmark::default());
+  b.name = bookmark.name;
+  b.url = bookmark.url;
 
   write(path, serde_json::to_string(&bookmarks)?)?;
 

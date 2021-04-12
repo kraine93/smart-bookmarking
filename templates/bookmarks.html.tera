@@ -6,41 +6,34 @@
     <span class="material-icons">add</span>
     Add bookmark
   </a>
-  <ul>
+  <nav>
     {% for key, bookmark in bookmarks %}
-    <li class="bookmark">
+    <a href="/bookmarks/{{key}}" class="bookmark">
       <div class="title">
         <h3>{{ bookmark.name }}</h3>
         <h3>
           <b>{{ key }}</b>
         </h3>
       </div>
-      <p>URL: <a href={{bookmark.url}}>{{ bookmark.url }}</a></p>
-      <p>Commands:</p>
       <ul>
         {% for key, cmd in bookmark.cmds %}
         <li class="command">
           <div class="title">
-            <h4>
+            <span class="title">
+              {% if cmd.isDefault %}
+              <span class="material-icons">star</span>
+              {% endif %}
+              {{ cmd.desc }}
+            </span>
+            <h3>
               <b>{{ key }}</b>
-            </h4>
-            {% if cmd.isDefault %}
-            <span class="material-icons">star</span>
-            {% endif %}
+            </h3>
           </div>
-          <p>{{ cmd.desc }}</p>
-          <p>Path: {{ cmd.path }}</p>
         </li>
         {% endfor %}
-        <li>
-          <a href="/" class="button secondary">
-            <span class="material-icons">add</span>
-            Add command
-          </a>
-        </li>
       </ul>
-    </li>
+    </a>
     {% endfor %}
-  </ul>
+  </nav>
 </div>
 {% endblock content %}

@@ -1,26 +1,55 @@
 {% extends "index" %}
-{% block title %}Add bookmark{% endblock title %}
+
+{% block title %}
+{% if shortcut %}
+    Edit bookmark
+{% else %}
+    Add bookmark
+{% endif %}
+{% endblock title %}
+
 {% block content %}
+{% if shortcut %}
+<a href="/bookmarks/{{shortcut}}" class="button" style="margin-bottom: 0.5rem;">
+  <span class="material-icons">arrow_back</span>
+  Back to bookmark
+</a>
+{% else %}
 <a href="/bookmarks" class="button" style="margin-bottom: 0.5rem;">
   <span class="material-icons">arrow_back</span>
   Back to bookmarks
 </a>
+{% endif %}
 <div class="form-container">
   <form id="add-bookmark-form">
     <label for="name">Site Name</label>
-    <input type="text" id="name" name="name" required autofocus>
+    <input type="text" id="name" name="name" value="{{ bookmark.name }}" required autofocus>
     <label for="url">URL</label>
-    <input type="url" id="url" name="url" required>
-    <label for="shortcut">Shortcut</label>
-    <input type="text" id="shortcut" name="shortcut" maxlength="4" required>
+    <input type="url" id="url" name="url" value="{{ bookmark.url }}" required>
 
-    <button type="submit" id="submit" class="secondary" style="margin-top: 2.5rem;">
+    {% if shortcut %}
+    <input type="hidden" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" required>
+    {% else %}
+    <label for="shortcut">Shortcut</label>
+    <input type="text" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" required>
+    {% endif %}
+
+    <button type="submit" id="submit" class="white" style="margin-top: 2rem;">
       <span class="material-icons">archive</span>
       Submit
     </button>
   </form>
 </div>
 
+{% if shortcut %}
+<script>
+  const isEdit = true;
+</script>
+{% else %}
+<script>
+  const isEdit = false;
+</script>
+{% endif %}
 <script>
   async function submitForm(e, form) {
     e.preventDefault();
@@ -28,16 +57,26 @@
     const btnSubmit = document.getElementById("submit");
     btnSubmit.disabled = true;
     setTimeout(() => btnSubmit.disabled = false, 2000);
-
+    
     const data = buildJsonFormData(form);
-
+    
     const headers = buildHeaders();
-
+    
     console.log(data);
     const result = await submitFormData(`/bookmarks/${data.shortcut}`, headers, data.formData);
     console.log(result);
+    
+    if (result.status === 200) {
+      alert(await result.text());
+      window.location.href = `/bookmarks/${data.shortcut}`;
+    } else {
+      alert(await result.text())
 
-    if (result) alert("Bookmark added!");
+      if (result.status === 409) {
+        if (confirm("Edit existing bookmark?")) 
+          window.location.href = `/bookmarks/${data.shortcut}/edit`;
+      }
+    }
   }
 
   function buildHeaders() {
@@ -63,7 +102,7 @@
   async function submitFormData(url, headers, data) {
     try {
       const response = await fetch(url, {
-        method: "POST",
+        method: isEdit ? "PATCH" : "POST",
         headers: headers,
         body: JSON.stringify(data)
       })
