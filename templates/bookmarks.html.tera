@@ -1,18 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bookmarks</title>
-</head>
-<body>
-  <h1>Bookmarks</h1>
-  {% for key, bookmark in bookmarks %}
-  <p>{{ key }}: {{ bookmark.url }}</p>
-  {% for key, cmd in bookmark.cmds %}
-  <p>{{ key }}: {{ cmd.path }}</p>
-  {% endfor %}
-  {% endfor %}
-</body>
-</html>
+{% extends "index" %}
+{% block title %}Bookmarks{% endblock title %}
+{% block content %}
+<div class="bookmarks-container">
+  <a href="/bookmarks/add" class="button">
+    <span class="material-icons">add</span>
+    Add bookmark
+  </a>
+  <ul>
+    {% for key, bookmark in bookmarks %}
+    <li class="bookmark">
+      <div class="title">
+        <h3>{{ bookmark.name }}</h3>
+        <h3>
+          <b>{{ key }}</b>
+        </h3>
+      </div>
+      <p>URL: <a href={{bookmark.url}}>{{ bookmark.url }}</a></p>
+      <p>Commands:</p>
+      <ul>
+        {% for key, cmd in bookmark.cmds %}
+        <li class="command">
+          <div class="title">
+            <h4>
+              <b>{{ key }}</b>
+            </h4>
+            {% if cmd.isDefault %}
+            <span class="material-icons">star</span>
+            {% endif %}
+          </div>
+          <p>{{ cmd.desc }}</p>
+          <p>Path: {{ cmd.path }}</p>
+        </li>
+        {% endfor %}
+        <li>
+          <a href="/" class="button secondary">
+            <span class="material-icons">add</span>
+            Add command
+          </a>
+        </li>
+      </ul>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock content %}

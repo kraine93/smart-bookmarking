@@ -1,0 +1,85 @@
+{% extends "index" %}
+{% block title %}Add bookmark{% endblock title %}
+{% block content %}
+<a href="/bookmarks" class="button" style="margin-bottom: 0.5rem;">
+  <span class="material-icons">arrow_back</span>
+  Back to bookmarks
+</a>
+<div class="form-container">
+  <form id="add-bookmark-form">
+    <label for="name">Site Name</label>
+    <input type="text" id="name" name="name" required autofocus>
+    <label for="url">URL</label>
+    <input type="url" id="url" name="url" required>
+    <label for="shortcut">Shortcut</label>
+    <input type="text" id="shortcut" name="shortcut" maxlength="4" required>
+
+    <button type="submit" id="submit" class="secondary" style="margin-top: 2.5rem;">
+      <span class="material-icons">archive</span>
+      Submit
+    </button>
+  </form>
+</div>
+
+<script>
+  async function submitForm(e, form) {
+    e.preventDefault();
+
+    const btnSubmit = document.getElementById("submit");
+    btnSubmit.disabled = true;
+    setTimeout(() => btnSubmit.disabled = false, 2000);
+
+    const data = buildJsonFormData(form);
+
+    const headers = buildHeaders();
+
+    console.log(data);
+    const result = await submitFormData(`/bookmarks/${data.shortcut}`, headers, data.formData);
+    console.log(result);
+
+    if (result) alert("Bookmark added!");
+  }
+
+  function buildHeaders() {
+    return {
+      "Content-Type": "application/json"
+    }
+  }
+
+  function buildJsonFormData(form) {
+    let shortcut = "";
+    let jsonFormData = {};
+    for(const pair of new FormData(form)) {
+      if (pair[0] === "shortcut") {
+        shortcut = pair[1];
+        continue;
+      }
+      jsonFormData[pair[0]] = pair[1];
+    }
+
+    return {shortcut: shortcut, formData: jsonFormData};
+  }
+
+  async function submitFormData(url, headers, data) {
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data)
+      })
+
+      return response;
+    } catch(err) {
+      console.error(err);
+      throw err;
+    }
+  }
+
+  const form = document.querySelector("#add-bookmark-form");
+  if (form) {
+    form.addEventListener("submit", function(e) {
+      submitForm(e, this);
+    });
+  }
+</script>
+{% endblock content %}

@@ -1,0 +1,230 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --sans: Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, Helvetica Neue,
+    sans-serif;
+  --mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier,
+    "Courier New", monospace;
+  --primary: #1560bd;
+  --secondary: #b85f00;
+  --background: #fff;
+  --c4: #000;
+  --rc: 8px;
+}
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* General settings */
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--background);
+  color: var(--c4);
+}
+
+a {
+  color: var(--background);
+  text-decoration: none;
+}
+
+a.button,
+button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a:hover {
+  color: var(--background);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Headlines */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+h2 {
+  font-size: 1.625rem;
+}
+
+h3 {
+  font-size: 1.3125rem;
+}
+
+h4 {
+  font-size: 1.1875rem;
+}
+
+h5,
+h6 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Table */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 1rem 0;
+}
+
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid;
+  padding: 0.4rem;
+}
+
+thead,
+tfoot {
+  background: var(--background);
+}
+
+/* Rounded Corners*/
+
+input,
+select,
+textarea,
+button,
+a.button {
+  border-radius: var(--rc);
+}
+
+/* Forms */
+
+input,
+select,
+textarea {
+  display: block;
+  font-size: 1rem;
+  color: var(--c4);
+  background: var(--background);
+  border: 0;
+  padding: 0.5rem;
+  min-width: 50%;
+  margin-bottom: 1rem;
+}
+
+a.button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  -webkit-appearance: none;
+  font-size: 1rem;
+  color: var(--background);
+  background: var(--primary);
+  border: 0;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  color: var(--background);
+}
+
+a.button:hover,
+a.button:focus,
+button:hover,
+button:focus,
+input:hover,
+textarea:hover,
+select:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+a.button.secondary,
+button.secondary {
+  background: var(--background);
+  color: var(--primary);
+}
+
+/* Lists*/
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+/* Other */
+
+.material-icons {
+  font-size: 1.25rem !important;
+  margin-right: 0.25rem;
+}
+
+.container {
+  max-width: 1280px;
+  width: fit-content;
+  margin: auto;
+  padding: 1.5rem;
+}
+
+.bookmarks-container {
+  padding: 0 0.25rem;
+}
+
+.bookmark {
+  border-radius: var(--rc);
+  padding: 0.5rem 1rem;
+  background: var(--primary);
+  color: var(--background);
+}
+
+.bookmark > .title,
+.command > .title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.command {
+  border-radius: var(--rc);
+  padding: 0.25rem 0.5rem;
+  background: var(--background);
+  color: var(--primary);
+}
+
+.form-container {
+  background-color: var(--primary);
+  border-radius: var(--rc);
+  padding: 2rem;
+}

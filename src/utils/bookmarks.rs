@@ -13,13 +13,16 @@ use std::path::Path;
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Command {
+  pub desc: String,
   pub path: String,
   #[serde(default = "bool::default")]
   pub is_default: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct Bookmark {
+  pub name: String,
   pub url: String,
   #[serde(default = "HashMap::default")]
   pub cmds: HashMap<String, Command>,

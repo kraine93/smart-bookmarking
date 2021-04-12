@@ -6,6 +6,7 @@ extern crate rocket;
 use rocket::http::{RawStr, Status};
 use rocket::response::Redirect;
 use rocket_contrib::json::Json;
+use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
 use std::time::Instant;
@@ -43,7 +44,7 @@ fn search(cmd: String) -> Redirect {
 }
 
 #[derive(serde::Serialize)]
-struct TemplateContext {
+struct BookmarksContext {
     bookmarks: Bookmarks,
 }
 
@@ -54,8 +55,25 @@ pub fn get_bookmarks() -> Template {
 
     Template::render(
         "bookmarks",
-        TemplateContext {
+        BookmarksContext {
             bookmarks: bookmarks,
+        },
+    )
+}
+
+#[derive(serde::Serialize)]
+struct AddBookmarkContext {
+    shortcut: String,
+    bookmark: Bookmark,
+}
+
+#[get("/bookmarks/add")]
+pub fn add_bookmark_template() -> Template {
+    Template::render(
+        "add-bookmark",
+        AddBookmarkContext {
+            shortcut: String::new(),
+            bookmark: Bookmark::default(),
         },
     )
 }
@@ -81,7 +99,7 @@ fn add_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
         key.to_string(),
         bookmark.into_inner(),
     ) {
-        Ok(_) => return ApiResponse::new(),
+        Ok(_) => return ApiResponse::new().set_message("Bookmark added!"),
         Err(_) => return ApiResponse::new().set_status(Status::InternalServerError),
     }
 }
@@ -124,11 +142,13 @@ fn main() {
                 search,
                 get_bookmarks,
                 add_bookmark,
+                add_bookmark_template,
                 add_command,
                 remove_bookmark,
                 remove_command
             ],
         )
+        .mount("/static", StaticFiles::from("static"))
         .attach(Template::fairing())
         .launch();
 }
