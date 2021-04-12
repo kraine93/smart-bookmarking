@@ -149,10 +149,80 @@ input[type="button"] {
   text-align: center;
 }
 
+input[type="checkbox"] {
+  display: inline-block;
+  min-width: unset;
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: var(--background);
+  border-radius: var(--rc);
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  opacity: 0.8;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--primary);
+  border: 2px solid var(--background);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
 label {
   display: inline-block;
   margin-bottom: 0.5rem;
   color: var(--background);
+}
+
+.hint {
+  color: var(--background);
+  font-size: 0.875rem;
 }
 
 a.button:hover,
@@ -185,6 +255,12 @@ input:disabled {
   opacity: 0.8;
 }
 
+button.delete {
+  padding: 0.25rem;
+  width: unset;
+  margin-left: auto;
+}
+
 /* Lists*/
 
 ul {
@@ -201,6 +277,9 @@ li {
 
 .material-icons {
   font-size: 1.25rem !important;
+}
+
+.material-icons.mr {
   margin-right: 0.25rem;
 }
 
@@ -237,6 +316,8 @@ a.bookmark:focus {
 }
 
 .command {
+  display: block;
+  margin: 0.5rem 0;
   border-radius: var(--rc);
   padding: 0.25rem 0.5rem;
   background: var(--background);

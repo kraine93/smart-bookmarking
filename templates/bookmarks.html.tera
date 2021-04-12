@@ -3,7 +3,7 @@
 {% block content %}
 <div class="bookmarks-container">
   <a href="/bookmarks/add" class="button">
-    <span class="material-icons">add</span>
+    <span class="material-icons mr">add</span>
     Add bookmark
   </a>
   <nav>
@@ -21,7 +21,7 @@
           <div class="title">
             <span class="title">
               {% if cmd.isDefault %}
-              <span class="material-icons">star</span>
+              <span class="material-icons mr">star</span>
               {% endif %}
               {{ cmd.desc }}
             </span>

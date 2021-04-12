@@ -2,7 +2,7 @@
 {% block title %}Bookmark{% endblock title %}
 {% block content %}
 <a href="/bookmarks" class="button" style="margin-bottom: 0.5rem;">
-  <span class="material-icons">arrow_back</span>
+  <span class="material-icons mr">arrow_back</span>
   Back to bookmarks
 </a>
 <div class="bookmark">
@@ -20,7 +20,7 @@
       <div class="title">
         <span class="title">
           {% if cmd.isDefault %}
-          <span class="material-icons">star</span>
+          <span class="material-icons mr">star</span>
           {% endif %}
           {{ cmd.desc }}
         </span>
@@ -29,22 +29,25 @@
         </h3>
       </div>
       <p>Path: {{ cmd.path }}</p>
+      <button id="btnDelete_{{ key }}" class="button secondary delete" onclick="deleteCommand(`{{key}}`)">
+        <span class="material-icons">delete</span>
+      </button>
     </li>
     {% endfor %}
     <li>
-      <a href="/" class="button white">
-        <span class="material-icons">add</span>
+      <a href="/bookmarks/{{ shortcut }}/add" class="button white">
+        <span class="material-icons mr">add</span>
         Add command
       </a>
     </li>
   </ul>
   <div class="button-container">
     <button id="btnDelete" class="button secondary" onclick="deleteBookmark()">
-      <span class="material-icons">bookmark_remove</span>
+      <span class="material-icons mr">bookmark_remove</span>
       Delete
     </button>
     <a href="/bookmarks/{{shortcut}}/edit" class="button white">
-      <span class="material-icons">edit</span>
+      <span class="material-icons mr">edit</span>
       Edit
     </a>
   </div>
@@ -59,9 +62,24 @@
       
       const result = await deleteRequest(`/bookmarks/{{shortcut}}`);
       
-      if (result) {
+      if (result?.status === 200) {
         alert("Bookmark deleted!");
         window.location.href = "/bookmarks";
+      }
+    }
+  }
+
+  async function deleteCommand(key) {
+    if (confirm("Delete this command?")) {
+      const btnDelete = document.getElementById(`btnDelete_${key}`);
+      btnDelete.disabled = true;
+      setTimeout(() => btnDelete.disabled = false, 2000);
+
+      const result = await deleteRequest(`/bookmarks/{{shortcut}}/commands/${key}`);
+
+      if (result?.status === 200) {
+        alert("Bookmark deleted!");
+        window.location.href = "/bookmarks/{{shortcut}}";
       }
     }
   }

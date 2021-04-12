@@ -1,38 +1,36 @@
 {% extends "index" %}
 
 {% block title %}
-{% if shortcut %}
-    Edit bookmark
+{% if cmd %}
+    Edit command
 {% else %}
-    Add bookmark
+    Add command
 {% endif %}
 {% endblock title %}
 
 {% block content %}
-{% if shortcut %}
 <a href="/bookmarks/{{shortcut}}" class="button" style="margin-bottom: 0.5rem;">
   <span class="material-icons mr">arrow_back</span>
   Back to bookmark
 </a>
-{% else %}
-<a href="/bookmarks" class="button" style="margin-bottom: 0.5rem;">
-  <span class="material-icons mr">arrow_back</span>
-  Back to bookmarks
-</a>
-{% endif %}
 <div class="form-container">
-  <form id="add-bookmark-form">
-    <label for="name">Site Name</label>
-    <input type="text" id="name" name="name" value="{{ bookmark.name }}" required autofocus>
-    <label for="url">URL</label>
-    <input type="url" id="url" name="url" value="{{ bookmark.url }}" required>
+  <form id="add-command-form">
+    <label for="desc">Short description</label>
+    <input type="text" id="desc" name="desc" value="{{ command.desc }}" required autofocus>
+    <label for="path">Path</label><span class="hint"> - (use {} in place of your query!)</span>
+    <input type="text" id="path" name="path" value="{{ command.path }}" placeholder="/search?query={}" required>
 
-    {% if shortcut %}
-    <input type="hidden" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" required>
+    {% if cmd %}
+    <input type="hidden" id="command" name="command" value="{{ cmd }}" maxlength="4" required>
     {% else %}
-    <label for="shortcut">Shortcut</label>
-    <input type="text" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" required>
+    <label for="command">Command</label>
+    <input type="text" id="command" name="command" value="{{ cmd }}" maxlength="4" required>
     {% endif %}
+
+    <label class="checkbox-container">Set as default?
+      <input type="checkbox" id="isDefault" name="isDefault">
+      <span class="checkmark"></span>
+    </label>
 
     <button type="submit" id="submit" class="white" style="margin-top: 2rem;">
       <span class="material-icons mr">archive</span>
@@ -41,15 +39,6 @@
   </form>
 </div>
 
-{% if shortcut %}
-<script>
-  const isEdit = true;
-</script>
-{% else %}
-<script>
-  const isEdit = false;
-</script>
-{% endif %}
 <script>
   async function submitForm(e, form) {
     e.preventDefault();
@@ -63,19 +52,14 @@
     const headers = buildHeaders();
     
     console.log(data);
-    const result = await submitFormData(`/bookmarks/${data.shortcut}`, headers, data.formData);
+    const result = await submitFormData(`/bookmarks/{{shortcut}}/commands/${data.command}`, headers, data.formData);
     console.log(result);
     
     if (result.status === 200) {
       alert(await result.text());
-      window.location.href = `/bookmarks/${data.shortcut}`;
+      window.location.href = `/bookmarks/{{shortcut}}`;
     } else {
       alert(await result.text())
-
-      if (result.status === 409) {
-        if (confirm("Edit existing bookmark?")) 
-          window.location.href = `/bookmarks/${data.shortcut}/edit`;
-      }
     }
   }
 
@@ -86,23 +70,24 @@
   }
 
   function buildJsonFormData(form) {
-    let shortcut = "";
+    let command = "";
     let jsonFormData = {};
     for(const pair of new FormData(form)) {
-      if (pair[0] === "shortcut") {
-        shortcut = pair[1];
+      if (pair[0] === "command") {
+        command = pair[1];
         continue;
       }
+      if (pair[0] === "isDefault" && pair[1] === "on") pair[1] = true; 
       jsonFormData[pair[0]] = pair[1];
     }
 
-    return {shortcut: shortcut, formData: jsonFormData};
+    return {command: command, formData: jsonFormData};
   }
 
   async function submitFormData(url, headers, data) {
     try {
       const response = await fetch(url, {
-        method: isEdit ? "PATCH" : "POST",
+        method: "POST",
         headers: headers,
         body: JSON.stringify(data)
       })
@@ -114,7 +99,7 @@
     }
   }
 
-  const form = document.querySelector("#add-bookmark-form");
+  const form = document.querySelector("#add-command-form");
   if (form) {
     form.addEventListener("submit", function(e) {
       submitForm(e, this);

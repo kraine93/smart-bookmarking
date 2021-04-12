@@ -54,6 +54,13 @@ struct BookmarkContext<'a> {
     bookmark: &'a Bookmark,
 }
 
+#[derive(serde::Serialize)]
+struct CommandContext<'a> {
+    shortcut: String,
+    cmd: String,
+    command: &'a Command,
+}
+
 #[get("/bookmarks")]
 pub fn get_bookmarks() -> Template {
     let bookmarks =
@@ -106,6 +113,23 @@ pub fn edit_bookmark(key: &RawStr) -> Template {
         BookmarkContext {
             shortcut: key.to_string(),
             bookmark: bookmark,
+        },
+    )
+}
+
+#[get("/bookmarks/<key>/add")]
+pub fn add_command_template(key: &RawStr) -> Template {
+    let bookmarks =
+        utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
+
+    bookmarks.get(&key.to_string()).expect("");
+
+    Template::render(
+        "add-command",
+        CommandContext {
+            shortcut: key.to_string(),
+            cmd: String::new(),
+            command: &Command::default(),
         },
     )
 }
@@ -173,7 +197,11 @@ fn add_command(key: &RawStr, cmd: &RawStr, command: Json<Command>) -> ApiRespons
         cmd.to_string(),
         command.into_inner(),
     ) {
-        Ok(_) => return ApiResponse::new().set_status(Status::Ok),
+        Ok(_) => {
+            return ApiResponse::new()
+                .set_status(Status::Ok)
+                .set_message("Command added!")
+        }
         Err(_) => return ApiResponse::new().set_status(Status::InternalServerError),
     }
 }
@@ -217,6 +245,7 @@ fn main() {
                 update_bookmark,
                 add_bookmark_template,
                 add_command,
+                add_command_template,
                 remove_bookmark,
                 remove_command
             ],
