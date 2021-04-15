@@ -9,7 +9,6 @@ use rocket_contrib::json::Json;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
-use std::collections::HashMap;
 use std::time::Instant;
 mod utils;
 use utils::bookmarks::{Bookmark, Bookmarks, Command};
