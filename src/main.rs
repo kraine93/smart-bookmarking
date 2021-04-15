@@ -35,7 +35,10 @@ fn search(cmd: String) -> Redirect {
             bookmark.get_mut(),
             utils::get_command_from_query_string(query),
         ),
-        Vacant(_) => utils::google::construct_google_search_query(&cmd),
+        Vacant(_) => match cmd.as_str() {
+            "/help" => String::from("/bookmarks"),
+            _ => utils::google::construct_google_search_query(&cmd),
+        },
     };
 
     println!("Time elapsed: {:?}", start.elapsed());
