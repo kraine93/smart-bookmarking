@@ -45,6 +45,7 @@ fn search(cmd: String) -> Redirect {
 
 #[derive(serde::Serialize)]
 struct BookmarksContext {
+    query: String,
     bookmarks: Bookmarks,
 }
 
@@ -61,14 +62,30 @@ struct CommandContext<'a> {
     command: &'a Command,
 }
 
-#[get("/bookmarks")]
-pub fn get_bookmarks() -> Template {
-    let bookmarks =
+#[get("/bookmarks?<query>")]
+pub fn get_bookmarks(query: Option<&RawStr>) -> Template {
+    let mut bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
+
+    if let Some(q) = query {
+        println!("{}", q);
+        bookmarks = bookmarks
+            .into_iter()
+            .filter(|(_k, v)| {
+                v.name
+                    .to_lowercase()
+                    .contains(&q.to_string().to_lowercase())
+            })
+            .collect();
+    }
 
     Template::render(
         "bookmarks",
         BookmarksContext {
+            query: match query {
+                Some(q) => q.to_string(),
+                None => String::new(),
+            },
             bookmarks: bookmarks,
         },
     )

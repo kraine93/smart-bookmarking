@@ -2,7 +2,11 @@
 {% block title %}Bookmarks{% endblock title %}
 {% block content %}
 <div class="bookmarks-container">
-  <a href="/bookmarks/add" class="button">
+  <form class="search-container">
+    <input id="query" name="query" type="search" placeholder="Search bookmarks..." value="{{ query }}">
+    <button type="submit" class="search-button"><span class="material-icons">search</span></button>
+  </form>
+  <a href="/bookmarks/add" class="button" style="margin-bottom: 0.5rem;">
     <span class="material-icons mr">add</span>
     Add bookmark
   </a>

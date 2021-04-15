@@ -149,6 +149,13 @@ input[type="button"] {
   text-align: center;
 }
 
+input[type="search"] {
+  width: 100%;
+  background-color: #f3f3f3;
+  border: 3px solid var(--primary);
+  margin-bottom: 0;
+}
+
 input[type="checkbox"] {
   display: inline-block;
   min-width: unset;
@@ -334,4 +341,14 @@ a.bookmark:focus {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.search-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-button {
+  width: fit-content;
 }
