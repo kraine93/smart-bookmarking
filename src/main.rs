@@ -110,12 +110,12 @@ pub fn get_bookmark(key: &RawStr) -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    let bookmark = bookmarks.get(&key.to_string()).expect("");
+    let bookmark = bookmarks.get(&key.to_lowercase().to_string()).expect("");
 
     Template::render(
         "bookmark",
         BookmarkContext {
-            shortcut: key.to_string(),
+            shortcut: key.to_lowercase().to_string(),
             bookmark: bookmark,
         },
     )
@@ -126,12 +126,12 @@ pub fn edit_bookmark(key: &RawStr) -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    let bookmark = bookmarks.get(&key.to_string()).expect("");
+    let bookmark = bookmarks.get(&key.to_lowercase().to_string()).expect("");
 
     Template::render(
         "add-bookmark",
         BookmarkContext {
-            shortcut: key.to_string(),
+            shortcut: key.to_lowercase().to_string(),
             bookmark: bookmark,
         },
     )
@@ -142,12 +142,12 @@ pub fn add_command_template(key: &RawStr) -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    bookmarks.get(&key.to_string()).expect("");
+    bookmarks.get(&key.to_lowercase().to_string()).expect("");
 
     Template::render(
         "add-command",
         CommandContext {
-            shortcut: key.to_string(),
+            shortcut: key.to_lowercase().to_string(),
             cmd: String::new(),
             command: &Command::default(),
         },
@@ -173,7 +173,7 @@ fn add_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    if let Some(_existing_bookmark) = bookmarks.get(&key.to_string()) {
+    if let Some(_existing_bookmark) = bookmarks.get(&key.to_lowercase().to_string()) {
         return ApiResponse::new()
             .set_status(Status::Conflict)
             .set_message("A bookmark with this shortcut already exists!");
@@ -181,7 +181,7 @@ fn add_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
 
     match utils::bookmarks::add_or_update_bookmark(
         BOOKMARKS_FILE_PATH,
-        key.to_string(),
+        key.to_lowercase().to_string(),
         bookmark.into_inner(),
     ) {
         Ok(_) => return ApiResponse::new().set_message("Bookmark added!"),
@@ -197,7 +197,7 @@ fn add_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
 fn update_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
     match utils::bookmarks::add_or_update_bookmark(
         BOOKMARKS_FILE_PATH,
-        key.to_string(),
+        key.to_lowercase().to_string(),
         bookmark.into_inner(),
     ) {
         Ok(_) => return ApiResponse::new().set_message("Bookmark updated!"),
@@ -213,8 +213,8 @@ fn update_bookmark(key: &RawStr, bookmark: Json<Bookmark>) -> ApiResponse {
 fn add_command(key: &RawStr, cmd: &RawStr, command: Json<Command>) -> ApiResponse {
     match utils::bookmarks::add_or_update_command(
         BOOKMARKS_FILE_PATH,
-        key.to_string(),
-        cmd.to_string(),
+        key.to_lowercase().to_string(),
+        cmd.to_lowercase().to_string(),
         command.into_inner(),
     ) {
         Ok(_) => {
@@ -228,7 +228,7 @@ fn add_command(key: &RawStr, cmd: &RawStr, command: Json<Command>) -> ApiRespons
 
 #[delete("/bookmarks/<key>")]
 fn remove_bookmark(key: &RawStr) -> ApiResponse {
-    match utils::bookmarks::remove_bookmark(BOOKMARKS_FILE_PATH, key.to_string()) {
+    match utils::bookmarks::remove_bookmark(BOOKMARKS_FILE_PATH, key.to_lowercase().to_string()) {
         Ok(_) => {
             return ApiResponse::new()
                 .set_status(Status::Ok)
@@ -240,7 +240,11 @@ fn remove_bookmark(key: &RawStr) -> ApiResponse {
 
 #[delete("/bookmarks/<key>/commands/<cmd>")]
 fn remove_command(key: &RawStr, cmd: &RawStr) -> ApiResponse {
-    match utils::bookmarks::remove_command(BOOKMARKS_FILE_PATH, key.to_string(), cmd.to_string()) {
+    match utils::bookmarks::remove_command(
+        BOOKMARKS_FILE_PATH,
+        key.to_lowercase().to_string(),
+        cmd.to_lowercase().to_string(),
+    ) {
         Ok(_) => return ApiResponse::new().set_status(Status::Ok),
         Err(_) => return ApiResponse::new().set_status(Status::InternalServerError),
     }

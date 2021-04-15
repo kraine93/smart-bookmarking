@@ -31,7 +31,7 @@
     <input type="hidden" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" required>
     {% else %}
     <label for="shortcut">Shortcut</label>
-    <input type="text" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" required>
+    <input type="text" id="shortcut" name="shortcut" value="{{ shortcut }}" maxlength="4" pattern="[A-Za-z]{1-4}" title="Shortcut can only contain letters." required>
     {% endif %}
 
     <button type="submit" id="submit" class="white" style="margin-top: 2rem;">
@@ -68,13 +68,13 @@
     
     if (result.status === 200) {
       alert(await result.text());
-      window.location.href = `/bookmarks/${data.shortcut}`;
+      window.location.href = `/bookmarks/${data.shortcut.toLowerCase()}`;
     } else {
       alert(await result.text())
 
       if (result.status === 409) {
         if (confirm("Edit existing bookmark?")) 
-          window.location.href = `/bookmarks/${data.shortcut}/edit`;
+          window.location.href = `/bookmarks/${data.shortcut.toLowerCase()}/edit`;
       }
     }
   }
