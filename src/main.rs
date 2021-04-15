@@ -9,6 +9,7 @@ use rocket_contrib::json::Json;
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use std::collections::hash_map::Entry::{Occupied, Vacant};
+use std::collections::HashMap;
 use std::time::Instant;
 mod utils;
 use utils::bookmarks::{Bookmark, Bookmarks, Command};
@@ -110,15 +111,16 @@ pub fn get_bookmark(key: &RawStr) -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    let bookmark = bookmarks.get(&key.to_lowercase().to_string()).expect("");
-
-    Template::render(
-        "bookmark",
-        BookmarkContext {
-            shortcut: key.to_lowercase().to_string(),
-            bookmark: bookmark,
-        },
-    )
+    match bookmarks.get(&key.to_lowercase().to_string()) {
+        Some(bookmark) => Template::render(
+            "bookmark",
+            BookmarkContext {
+                shortcut: key.to_lowercase().to_string(),
+                bookmark: bookmark,
+            },
+        ),
+        None => Template::render("404", Bookmarks::default()),
+    }
 }
 
 #[get("/bookmarks/<key>/edit")]
@@ -126,15 +128,16 @@ pub fn edit_bookmark(key: &RawStr) -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    let bookmark = bookmarks.get(&key.to_lowercase().to_string()).expect("");
-
-    Template::render(
-        "add-bookmark",
-        BookmarkContext {
-            shortcut: key.to_lowercase().to_string(),
-            bookmark: bookmark,
-        },
-    )
+    match bookmarks.get(&key.to_lowercase().to_string()) {
+        Some(bookmark) => Template::render(
+            "add-bookmark",
+            BookmarkContext {
+                shortcut: key.to_lowercase().to_string(),
+                bookmark: bookmark,
+            },
+        ),
+        None => Template::render("404", Bookmarks::default()),
+    }
 }
 
 #[get("/bookmarks/<key>/add")]
@@ -142,16 +145,17 @@ pub fn add_command_template(key: &RawStr) -> Template {
     let bookmarks =
         utils::bookmarks::get_bookmarks_from_file(BOOKMARKS_FILE_PATH).unwrap_or_default();
 
-    bookmarks.get(&key.to_lowercase().to_string()).expect("");
-
-    Template::render(
-        "add-command",
-        CommandContext {
-            shortcut: key.to_lowercase().to_string(),
-            cmd: String::new(),
-            command: &Command::default(),
-        },
-    )
+    match bookmarks.get(&key.to_lowercase().to_string()) {
+        Some(_) => Template::render(
+            "add-command",
+            CommandContext {
+                shortcut: key.to_lowercase().to_string(),
+                cmd: String::new(),
+                command: &Command::default(),
+            },
+        ),
+        None => Template::render("404", Bookmarks::default()),
+    }
 }
 
 #[post("/bookmarks/<key>", data = "<bookmark>")]
@@ -251,8 +255,8 @@ fn remove_command(key: &RawStr, cmd: &RawStr) -> ApiResponse {
 }
 
 #[catch(404)]
-fn not_found() -> String {
-    format!("That page doesn't exist. Try something else?")
+fn not_found() -> Template {
+    Template::render("404", Bookmarks::default())
 }
 
 fn main() {

@@ -1,0 +1,9 @@
+{% extends "index" %}
+{% block title %}#404{% endblock title %}
+{% block content %}
+<h2 style="color: var(--primary); margin-bottom: 0.5rem;">Sorry, that page is not available!</h2>
+<a href="/bookmarks" class="button">
+    <span class="material-icons mr">home</span>
+    See all bookmarks
+  </a>
+{% endblock content %}
