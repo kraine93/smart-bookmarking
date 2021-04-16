@@ -24,7 +24,7 @@
     <input type="hidden" id="command" name="command" value="{{ cmd }}" maxlength="4" required>
     {% else %}
     <label for="command">Command</label>
-    <input type="text" id="command" name="command" value="{{ cmd }}" maxlength="4" pattern="[A-Za-z]{1-4}" title="Shortcut can only contain letters." required>
+    <input type="text" id="command" name="command" value="{{ cmd }}" maxlength="4" pattern="[A-Za-z]{1,4}" title="Shortcut can only contain letters." required>
     {% endif %}
 
     <label class="checkbox-container">Set as default?
