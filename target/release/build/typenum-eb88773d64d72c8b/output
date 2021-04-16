@@ -1,2 +1,0 @@
-cargo:rustc-env=TYPENUM_BUILD_CONSTS=C:\Development\Rust\smart-bookmarking\target\release\build\typenum-eb88773d64d72c8b\out\consts.rs
-cargo:rustc-env=TYPENUM_BUILD_OP=C:\Development\Rust\smart-bookmarking\target\release\build\typenum-eb88773d64d72c8b\out\op.rs
