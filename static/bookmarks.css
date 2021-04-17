@@ -10,8 +10,8 @@
   --primary: #1560bd;
   --secondary: #b85f00;
   --background: #fff;
-  --c4: #000;
-  --rc: 8px;
+  --text: rgba(0, 0, 0, 0.85);
+  --rc: 6px;
 }
 
 html {
@@ -29,20 +29,14 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   background-color: var(--background);
-  color: var(--c4);
+  color: var(--text);
 }
+
+/* Links */
 
 a {
   color: var(--background);
   text-decoration: none;
-}
-
-a.button,
-button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 a:hover {
@@ -88,27 +82,6 @@ h6 {
   font-weight: bold;
 }
 
-/* Table */
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: 1rem 0;
-}
-
-th,
-td {
-  text-align: left;
-  vertical-align: top;
-  border: 1px solid;
-  padding: 0.4rem;
-}
-
-thead,
-tfoot {
-  background: var(--background);
-}
-
 /* Rounded Corners*/
 
 input,
@@ -121,12 +94,18 @@ a.button {
 
 /* Forms */
 
+.form-container {
+  background-color: var(--primary);
+  border-radius: var(--rc);
+  padding: 1rem;
+}
+
 input,
 select,
 textarea {
   display: block;
   font-size: 1rem;
-  color: var(--c4);
+  color: var(--text);
   background: var(--background);
   border: 0;
   padding: 0.5rem;
@@ -161,66 +140,6 @@ input[type="checkbox"] {
   min-width: unset;
 }
 
-.checkbox-container {
-  display: block;
-  position: relative;
-  padding-left: 30px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.checkbox-container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 1.5rem;
-  width: 1.5rem;
-  background-color: var(--background);
-  border-radius: var(--rc);
-}
-
-.checkbox-container:hover input ~ .checkmark {
-  opacity: 0.8;
-}
-
-.checkbox-container input:checked ~ .checkmark {
-  background-color: var(--primary);
-  border: 2px solid var(--background);
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.checkbox-container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.checkbox-container .checkmark:after {
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
 label {
   display: inline-block;
   margin-bottom: 0.5rem;
@@ -241,6 +160,22 @@ textarea:hover,
 select:hover {
   opacity: 0.8;
   text-decoration: none;
+}
+
+/* Buttons */
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+a.button,
+button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 a.button.white,
@@ -266,6 +201,10 @@ button.delete {
   padding: 0.25rem;
   width: unset;
   margin-left: auto;
+}
+
+.search-button {
+  width: fit-content;
 }
 
 /* Lists*/
@@ -331,24 +270,8 @@ a.bookmark:focus {
   color: var(--primary);
 }
 
-.form-container {
-  background-color: var(--primary);
-  border-radius: var(--rc);
-  padding: 1rem;
-}
-
-.button-container {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
 .search-container {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;
-}
-
-.search-button {
-  width: fit-content;
 }

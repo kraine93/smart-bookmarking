@@ -27,10 +27,8 @@
     <input type="text" id="command" name="command" value="{{ cmd }}" maxlength="4" pattern="[A-Za-z]{1,4}" title="Shortcut can only contain letters." required>
     {% endif %}
 
-    <label class="checkbox-container">Set as default?
-      <input type="checkbox" id="isDefault" name="isDefault">
-      <span class="checkmark"></span>
-    </label>
+    <label for="isDefault" class="checkbox-container">Set as default?</label>
+    <input type="checkbox" id="isDefault" name="isDefault">
 
     <button type="submit" id="submit" class="white" style="margin-top: 2rem;">
       <span class="material-icons mr">archive</span>
